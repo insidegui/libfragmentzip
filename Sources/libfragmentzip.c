@@ -10,7 +10,7 @@
 #define _POSIX_C_SOURCE 200809L
 #define _FILE_OFFSET_BITS 64
 
-#include <libgeneral/macros.h>
+#include <libfragmentzip/macros.h>
 
 #ifdef HAVE_FSEEKO
 #define _LARGEFILE_SOURCE
@@ -295,7 +295,7 @@ fragmentzip_t *fragmentzip_open_extended(const char *url, CURL *mcurl){
     }else{
         memset(downloadRange, 0, sizeof(downloadRange));
         dbuf->size_buf = info->internal.cd_end->cd_size + sizeof(fragmentzip_end_of_cd);
-        snprintf(downloadRange, sizeof(downloadRange), "%" PRIu32 "-%" PRIu64,info->internal.cd_end->cd_start_offset, info->internal.cd_end->cd_start_offset+dbuf->size_buf-1);
+        snprintf(downloadRange, sizeof(downloadRange), "%" PRIu32 "-%" PRIu64,info->internal.cd_end->cd_start_offset, (unsigned long long)info->internal.cd_end->cd_start_offset+dbuf->size_buf-1);
     }
     
     dbuf->size_downloaded = 0;
