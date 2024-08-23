@@ -8,6 +8,9 @@ let package = Package(
     products: [
         .library(name: "FragmentZip", targets: ["FragmentZip"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.5.0"),
+    ],
     targets: [
         .target(
             name: "CFragmentZip",
@@ -16,6 +19,9 @@ let package = Package(
             publicHeadersPath: "include",
             cSettings: [
                 .headerSearchPath("."),
+            ],
+            linkerSettings: [
+                .linkedLibrary("curl")
             ]
         ),
         .target(
@@ -24,6 +30,13 @@ let package = Package(
                 .target(name: "CFragmentZip")
             ],
             path: "Sources/FragmentZip"
+        ),
+        .executableTarget(
+            name: "fzip",
+            dependencies: [
+                .target(name: "FragmentZip"),
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+            ]
         )
     ]
 )
